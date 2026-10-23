@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\Color;
 use App\Models\Item;
+use App\Models\Place;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

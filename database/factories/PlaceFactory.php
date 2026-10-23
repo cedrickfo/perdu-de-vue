@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PlaceKind;
 use App\Models\Place;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
