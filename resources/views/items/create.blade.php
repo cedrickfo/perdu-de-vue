@@ -205,10 +205,10 @@
         {{-- Boutons --}}
         <div class="flex flex-wrap items-center gap-4 border-t border-stone-200 bg-[#f5f0e7] px-6 py-5">
 
-            <button type="submit"
-                    class="rounded-xl bg-orange-500 px-7 py-3 font-semibold text-white shadow-sm transition hover:bg-orange-600">
-                Enregistrer l'objet
-            </button>
+
+            <x-button variant="secondary" type="submit">
+    Enregistrer l'objet
+</x-button>
 
             <a href="{{ route('items.index') }}"
                class="rounded-xl border border-stone-300 bg-white px-7 py-3 font-semibold text-slate-700 transition hover:bg-stone-100">

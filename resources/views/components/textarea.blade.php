@@ -1,16 +1,15 @@
-{{-- Une zone de texte. Le contenu va dans le slot. Même mécanisme d'erreur que <x-input>. --}}
-@props(['name'])
 
-@php
-    $invalid = $errors->has($name);
-@endphp
+@props([
+    'name' => null,
+])
 
 <textarea
-    name="{{ $name }}"
-    @if ($invalid) aria-invalid="true" aria-describedby="{{ $name }}-error" @endif
-    {{ $attributes->merge(['id' => $name, 'rows' => 4])->class([
-        'mt-2 block w-full rounded-lg border bg-white px-3 py-2 shadow-xs focus:ring-3 focus:outline-hidden dark:bg-zinc-950',
-        'border-zinc-300 placeholder:text-zinc-400 focus:border-brand-600 focus:ring-brand-600/20 dark:border-zinc-700' => ! $invalid,
-        'border-red-500 text-red-900 focus:border-red-600 focus:ring-red-600/20 dark:border-red-400 dark:text-red-100' => $invalid,
+    @if ($name) name="{{ $name }}" @endif
+    {{ $attributes->class([
+        'w-full rounded-lg border bg-white px-4 py-3 text-slate-900 transition',
+        'focus:outline-none focus:ring-2 focus:ring-offset-1',
+        'border-red-500 focus:border-red-600 focus:ring-red-300' => $name && $errors->has($name),
+        'border-slate-300 focus:border-[#07558e] focus:ring-blue-200' => ! $name || ! $errors->has($name),
     ]) }}
+    @if ($name && $errors->has($name)) aria-invalid="true" @endif
 >{{ $slot }}</textarea>

@@ -36,86 +36,21 @@
         </div>
 
     </section>
+{{-- Liste des objets du lieu --}}
+<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 
-    {{-- Liste des objets du lieu --}}
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    @forelse ($place->items as $item)
 
-        @forelse ($place->items as $item)
+        <x-item-card :item="$item" />
 
-            <article class="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+    @empty
 
-                {{-- En-tête de la carte --}}
-                <div class="flex items-center justify-between gap-3 border-b border-stone-200 bg-[#f5f0e7] p-4">
+        <p class="col-span-full rounded-xl border border-stone-200 bg-white p-6 text-center text-slate-600">
+            Aucun objet trouvé dans ce lieu.
+        </p>
 
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wide text-stone-500">
-                            Objet trouvé
-                        </p>
+    @endforelse
 
-                        <p class="text-sm font-bold text-[#07558e]">
-                            N° {{ str_pad($item->id, 4, '0', STR_PAD_LEFT) }}
-                        </p>
-                    </div>
-
-                    {{-- Couleur --}}
-                    <x-badge :color="$item->color->badgeClasses()">
-                        {{ $item->color->label() }}
-                    </x-badge>
-
-                </div>
-
-                {{-- Contenu --}}
-                <div class="space-y-4 p-5">
-
-                    <p class="text-xs text-slate-500">
-                        Trouvé le
-                        {{ $item->found_on->locale('fr')->isoFormat('D MMMM YYYY') }}
-                    </p>
-
-                    <h2 class="text-lg font-bold text-slate-900">
-                        <a href="{{ route('items.show', $item) }}"
-                           class="hover:text-[#07558e] hover:underline">
-                            {{ $item->name }}
-                        </a>
-                    </h2>
-
-                    {{-- Étiquettes --}}
-                    <div class="flex flex-wrap gap-2">
-
-                        @foreach ($item->tags as $tag)
-                            <x-badge>{{ $tag->name }}</x-badge>
-                        @endforeach
-
-                    </div>
-
-                    {{-- État de restitution --}}
-                    @if ($item->isReturned())
-
-                        <div class="rounded-lg bg-green-50 px-4 py-3 text-sm font-semibold text-green-800">
-                            ✓ Restitué le
-                            {{ $item->returned_at->locale('fr')->isoFormat('D MMMM YYYY') }}
-                        </div>
-
-                    @else
-
-                        <div class="rounded-lg bg-orange-50 px-4 py-3 text-sm font-semibold text-orange-800">
-                            En attente de restitution
-                        </div>
-
-                    @endif
-
-                </div>
-
-            </article>
-
-        @empty
-
-            <p class="col-span-full rounded-xl border border-stone-200 bg-white p-6 text-center text-slate-600">
-                Aucun objet trouvé dans ce lieu.
-            </p>
-
-        @endforelse
-
-    </div>
+</div>
 
 </x-layouts.app>

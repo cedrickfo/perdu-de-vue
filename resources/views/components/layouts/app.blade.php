@@ -37,25 +37,69 @@
 
             </a>
 
-            {{-- Navigation principale --}}
-            <div class="flex flex-wrap items-center gap-3 text-sm font-semibold">
 
-                <a href="{{ route('items.index') }}"
-                   class="rounded-lg px-4 py-2 transition hover:bg-white/15">
-                    Objets
-                </a>
+{{-- Navigation principale --}}
 
-                <a href="{{ route('items.create') }}"
-                   class="rounded-lg px-4 py-2 transition hover:bg-white/15">
-                    Ajouter un objet
-                </a>
+{{-- Navigation sur ordinateur --}}
+<div class="hidden items-center gap-3 text-sm font-semibold md:flex">
 
-                <a href="{{ route('styleguide') }}"
-                   class="rounded-lg px-4 py-2 transition hover:bg-white/15">
-                    Composants
-                </a>
+    <a href="{{ route('items.index') }}"
+       class="{{ request()->routeIs('items.index', 'items.show', 'items.edit', 'places.show')
+           ? 'rounded-lg bg-orange-500 px-4 py-2 text-white transition'
+           : 'rounded-lg px-4 py-2 text-blue-100 transition hover:bg-white/15' }}">
+        Objets trouvés
+    </a>
 
-            </div>
+    <a href="{{ route('items.create') }}"
+       class="{{ request()->routeIs('items.create')
+           ? 'rounded-lg bg-orange-500 px-4 py-2 text-white transition'
+           : 'rounded-lg px-4 py-2 text-blue-100 transition hover:bg-white/15' }}">
+        Ajouter un objet
+    </a>
+
+    <a href="{{ route('styleguide') }}"
+       class="{{ request()->routeIs('styleguide')
+           ? 'rounded-lg bg-orange-500 px-4 py-2 text-white transition'
+           : 'rounded-lg px-4 py-2 text-blue-100 transition hover:bg-white/15' }}">
+        Composants
+    </a>
+
+</div>
+
+{{-- Navigation sur téléphone --}}
+<details class="w-full md:hidden">
+
+    <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg border border-white/30 px-4 py-2 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400">
+        <span>Menu</span>
+        <span class="text-2xl" aria-hidden="true">☰</span>
+    </summary>
+
+    <div class="mt-3 flex flex-col gap-2 text-sm font-semibold">
+
+        <a href="{{ route('items.index') }}"
+           class="{{ request()->routeIs('items.index', 'items.show', 'items.edit', 'places.show')
+               ? 'rounded-lg bg-orange-500 px-4 py-3 text-white'
+               : 'rounded-lg px-4 py-3 text-blue-100 hover:bg-white/15' }}">
+            Objets trouvés
+        </a>
+
+        <a href="{{ route('items.create') }}"
+           class="{{ request()->routeIs('items.create')
+               ? 'rounded-lg bg-orange-500 px-4 py-3 text-white'
+               : 'rounded-lg px-4 py-3 text-blue-100 hover:bg-white/15' }}">
+            Ajouter un objet
+        </a>
+
+        <a href="{{ route('styleguide') }}"
+           class="{{ request()->routeIs('styleguide')
+               ? 'rounded-lg bg-orange-500 px-4 py-3 text-white'
+               : 'rounded-lg px-4 py-3 text-blue-100 hover:bg-white/15' }}">
+            Composants
+        </a>
+
+    </div>
+
+</details>
 
         </nav>
 
@@ -78,7 +122,7 @@
     {{-- Pied de page --}}
     <footer class="mt-12 border-t border-stone-200 bg-[#f4efe6] px-6 py-6">
 
-        <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 text-sm text-slate-600">
+        <div class="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-4 text-sm text-slate-600">
 
             <p>
                 Perdu de vue · Bureau des objets trouvés de la gare de Wavre
