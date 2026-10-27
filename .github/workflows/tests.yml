@@ -23,14 +23,14 @@ jobs:
       - name: Préparer l'environnement
         run: cp .env.example .env
 
-     - name: Générer la clé Laravel
-  run: php artisan key:generate
+      - name: Générer la clé Laravel
+        run: php artisan key:generate
 
-- name: Installer les dépendances JavaScript
-  run: npm ci
+      - name: Installer les dépendances JavaScript
+        run: npm ci
 
-- name: Compiler les ressources Vite
-  run: npm run build
+      - name: Compiler les ressources Vite
+        run: npm run build
 
-- name: Exécuter les tests
-  run: php artisan test
+      - name: Exécuter les tests
+        run: php artisan test
