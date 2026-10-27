@@ -107,6 +107,29 @@
             </select>
         </div>
 
+
+     {{-- Tri des objets --}}
+<div class="flex-1">
+    <label for="tri" class="mb-2 block font-semibold">
+        Trier par
+    </label>
+
+    <select name="tri" id="tri"
+        class="w-full rounded-lg border border-slate-300 p-3">
+
+        <option value="date" @selected(request('tri', 'date') === 'date')>
+            Date (plus récent)
+        </option>
+
+        <option value="nom" @selected(request('tri') === 'nom')>
+            Nom (A à Z)
+        </option>
+
+    </select>
+</div>
+
+
+
         <button type="submit"
             class="rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white transition hover:bg-blue-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
             Filtrer

@@ -17,9 +17,9 @@ class ItemController extends Controller
             ->whereNull('returned_at')
             ->with(['place', 'tags']);
 
-         if ($request->filled('q')) {
-    $query->where('name', 'like', '%'.$request->query('q').'%');
-}
+        if ($request->filled('q')) {
+            $query->where('name', 'like', '%'.$request->query('q').'%');
+        }
 
         if ($request->filled('lieu')) {
             $query->where('place_id', $request->query('lieu'));
@@ -29,9 +29,20 @@ class ItemController extends Controller
             $query->where('color', $color->value);
         }
 
-        $items = $query->orderByDesc('found_on')
-            ->orderByDesc('id')
-            ->get();
+        $tri = $request->query('tri', 'date');
+
+        // Accepter uniquement les valeurs autorisées
+        if (! in_array($tri, ['date', 'nom'], true)) {
+            $tri = 'date';
+        }
+
+        if ($tri === 'nom') {
+            $query->orderBy('name')->orderBy('id');
+        } else {
+            $query->orderByDesc('found_on')->orderByDesc('id');
+        }
+
+        $items = $query->get();
 
         $places = Place::orderBy('name')->get();
 

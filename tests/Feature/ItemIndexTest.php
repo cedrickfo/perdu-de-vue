@@ -124,3 +124,64 @@ it('recherche les objets par leur nom', function () {
             && $items->first()->name === 'Sac à dos noir';
     });
 });
+
+it('trie les objets par nom alphabétique', function () {
+
+    Item::factory()->create([
+        'name' => 'Valise rouge',
+    ]);
+
+    Item::factory()->create([
+        'name' => 'Casquette bleue',
+    ]);
+
+    Item::factory()->create([
+        'name' => 'Parapluie noir',
+    ]);
+
+    $response = $this->get(route('items.index', [
+        'tri' => 'nom',
+    ]));
+
+    $response->assertOk();
+
+    $response->assertViewHas('items', function ($items) {
+        return $items->pluck('name')->all() === [
+            'Casquette bleue',
+            'Parapluie noir',
+            'Valise rouge',
+        ];
+    });
+});
+
+it('trie les objets du plus récent au plus ancien', function () {
+
+    Item::factory()->create([
+        'name' => 'Objet ancien',
+        'found_on' => '2026-10-01',
+    ]);
+
+    Item::factory()->create([
+        'name' => 'Objet récent',
+        'found_on' => '2026-10-15',
+    ]);
+
+    Item::factory()->create([
+        'name' => 'Objet intermédiaire',
+        'found_on' => '2026-10-08',
+    ]);
+
+    $response = $this->get(route('items.index', [
+        'tri' => 'date',
+    ]));
+
+    $response->assertOk();
+
+    $response->assertViewHas('items', function ($items) {
+        return $items->pluck('name')->all() === [
+            'Objet récent',
+            'Objet intermédiaire',
+            'Objet ancien',
+        ];
+    });
+});
