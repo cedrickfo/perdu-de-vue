@@ -102,3 +102,25 @@ it('combine les filtres par lieu et par couleur', function () {
             && $items->first()->color === Color::Red;
     });
 });
+
+it('recherche les objets par leur nom', function () {
+
+    Item::factory()->create([
+        'name' => 'Sac à dos noir',
+    ]);
+
+    Item::factory()->create([
+        'name' => 'Parapluie rouge',
+    ]);
+
+    $response = $this->get(route('items.index', [
+        'q' => 'sac',
+    ]));
+
+    $response->assertOk();
+
+    $response->assertViewHas('items', function ($items) {
+        return $items->count() === 1
+            && $items->first()->name === 'Sac à dos noir';
+    });
+});

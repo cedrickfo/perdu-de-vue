@@ -17,6 +17,10 @@ class ItemController extends Controller
             ->whereNull('returned_at')
             ->with(['place', 'tags']);
 
+         if ($request->filled('q')) {
+    $query->where('name', 'like', '%'.$request->query('q').'%');
+}
+
         if ($request->filled('lieu')) {
             $query->where('place_id', $request->query('lieu'));
         }
