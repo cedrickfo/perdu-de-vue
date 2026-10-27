@@ -1,120 +1,221 @@
 
 <x-layouts.app>
 
+    {{-- Retour à la liste --}}
     <a href="{{ route('items.index') }}"
-       class="text-blue-700 hover:underline">
-        ← Retour à la liste
+       class="mb-6 inline-block font-semibold text-[#07558e] hover:underline">
+        ← Retour à la liste des objets
     </a>
 
-    <h1 class="mb-6 mt-6 text-3xl font-bold text-blue-900">
-        Ajouter un objet trouvé
-    </h1>
+    {{-- Titre --}}
+    <section class="mb-8">
 
-    <form method="POST" action="{{ route('items.store') }}"
-          class="space-y-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="mb-2 text-sm font-bold uppercase tracking-widest text-orange-700">
+            Bureau des objets trouvés
+        </p>
+
+        <h1 class="mb-3 text-4xl font-extrabold text-[#07558e]">
+            Ajouter un objet trouvé
+        </h1>
+
+        <p class="text-slate-600">
+            Renseignez les informations de l'objet afin de faciliter
+            sa restitution à son propriétaire.
+        </p>
+
+    </section>
+
+    {{-- Formulaire --}}
+    <form method="POST"
+          action="{{ route('items.store') }}"
+          class="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
 
         @csrf
 
-        {{-- Nom de l'objet --}}
-        <div>
-            <x-label for="name">Nom de l'objet</x-label>
-            <x-input id="name" name="name" type="text"
-                     :value="old('name')" />
+        {{-- En-tête du formulaire --}}
+        <div class="border-b border-stone-200 bg-[#f5f0e7] px-6 py-5">
 
-            @error('name')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
+            <h2 class="text-xl font-bold text-[#07558e]">
+                Informations de l'objet
+            </h2>
+
+            <p class="mt-1 text-sm text-slate-600">
+                Les champs marqués d'un * sont obligatoires.
+            </p>
+
         </div>
 
-        {{-- Description --}}
-        <div>
-            <x-label for="description">Description</x-label>
-            <x-textarea id="description" name="description">{{ old('description') }}</x-textarea>
+        <div class="space-y-7 p-6">
 
-            @error('description')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
+            {{-- Nom --}}
+            <div>
+                <x-label for="name">Nom de l'objet *</x-label>
 
-        {{-- Lieu --}}
-        <div>
-            <x-label for="place_id">Lieu de découverte</x-label>
+                <x-input id="name"
+                         name="name"
+                         type="text"
+                         :value="old('name')"
+                         placeholder="Ex. : Sac à dos noir" />
 
-            <select id="place_id" name="place_id"
-                    class="w-full rounded-lg border border-slate-300 p-3">
-                <option value="">Choisir un lieu</option>
-
-                @foreach ($places as $place)
-                    <option value="{{ $place->id }}"
-                        @selected(old('place_id') == $place->id)>
-                        {{ $place->name }}
-                    </option>
-                @endforeach
-            </select>
-
-            @error('place_id')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
-
-        {{-- Couleur --}}
-        <div>
-            <x-label for="color">Couleur</x-label>
-
-            <select id="color" name="color"
-                    class="w-full rounded-lg border border-slate-300 p-3">
-                <option value="">Choisir une couleur</option>
-
-                @foreach ($colors as $color)
-                    <option value="{{ $color->value }}"
-                        @selected(old('color') === $color->value)>
-                        {{ $color->label() }}
-                    </option>
-                @endforeach
-            </select>
-
-            @error('color')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
-
-        {{-- Date de découverte --}}
-        <div>
-            <x-label for="found_on">Date de découverte</x-label>
-
-            <x-input id="found_on" name="found_on" type="date"
-                     :value="old('found_on')" />
-
-            @error('found_on')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </div>
-
-        {{-- Étiquettes --}}
-        <fieldset>
-            <legend class="mb-3 font-semibold">Étiquettes</legend>
-
-            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                @foreach ($tags as $tag)
-                    <label class="flex items-center gap-2">
-                        <input type="checkbox"
-                               name="tags[]"
-                               value="{{ $tag->id }}"
-                               @checked(in_array($tag->id, old('tags', [])))>
-                        {{ $tag->name }}
-                    </label>
-                @endforeach
+                @error('name')
+                    <p class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
-            @error('tags')
-                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-            @enderror
-        </fieldset>
+            {{-- Description --}}
+            <div>
+                <x-label for="description">Description</x-label>
 
-        <button type="submit"
-                class="rounded-lg bg-blue-700 px-6 py-3 font-semibold text-white transition hover:bg-blue-900">
-            Enregistrer l'objet
-        </button>
+                <x-textarea id="description"
+                            name="description"
+                            placeholder="Décrivez l'objet et ses particularités...">{{ old('description') }}</x-textarea>
+
+                @error('description')
+                    <p class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            {{-- Lieu et couleur --}}
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+                <div>
+                    <x-label for="place_id">Lieu de découverte *</x-label>
+
+                    <select id="place_id"
+                            name="place_id"
+                            class="w-full rounded-lg border border-slate-300 bg-white p-3 focus:border-blue-600 focus:outline-none">
+
+                        <option value="">Choisir un lieu</option>
+
+                        @foreach ($places as $place)
+                            <option value="{{ $place->id }}"
+                                @selected(old('place_id') == $place->id)>
+                                {{ $place->name }}
+                            </option>
+                        @endforeach
+
+                    </select>
+
+                    @error('place_id')
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-label for="color">Couleur *</x-label>
+
+                    <select id="color"
+                            name="color"
+                            class="w-full rounded-lg border border-slate-300 bg-white p-3 focus:border-blue-600 focus:outline-none">
+
+                        <option value="">Choisir une couleur</option>
+
+                        @foreach ($colors as $color)
+                            <option value="{{ $color->value }}"
+                                @selected(old('color') === $color->value)>
+                                {{ $color->label() }}
+                            </option>
+                        @endforeach
+
+                    </select>
+
+                    @error('color')
+                        <p class="mt-2 text-sm text-red-600">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+            </div>
+
+            {{-- Date --}}
+            <div class="md:w-1/2">
+
+                <x-label for="found_on">Date de découverte *</x-label>
+
+                <x-input id="found_on"
+                         name="found_on"
+                         type="date"
+                         :value="old('found_on')" />
+
+                @error('found_on')
+                    <p class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+
+            </div>
+
+            {{-- Étiquettes --}}
+            <fieldset class="rounded-xl border border-stone-200 bg-[#faf7f1] p-5">
+
+                <legend class="px-2 font-bold text-[#07558e]">
+                    Étiquettes
+                </legend>
+
+                <p class="mb-4 text-sm text-slate-600">
+                    Sélectionnez les étiquettes correspondant à l'objet.
+                    Plusieurs choix sont possibles.
+                </p>
+
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+
+                    @foreach ($tags as $tag)
+
+                        <label class="flex cursor-pointer items-center gap-3 rounded-lg border border-stone-200 bg-white p-3 transition hover:border-blue-400">
+
+                            <input type="checkbox"
+                                   name="tags[]"
+                                   value="{{ $tag->id }}"
+                                   class="h-4 w-4 accent-blue-700"
+                                   @checked(in_array($tag->id, old('tags', [])))>
+
+                            <span class="text-sm font-medium text-slate-800">
+                                {{ $tag->name }}
+                            </span>
+
+                        </label>
+
+                    @endforeach
+
+                </div>
+
+                @error('tags')
+                    <p class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+
+                @error('tags.*')
+                    <p class="mt-2 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+
+            </fieldset>
+
+        </div>
+
+        {{-- Boutons --}}
+        <div class="flex flex-wrap items-center gap-4 border-t border-stone-200 bg-[#f5f0e7] px-6 py-5">
+
+            <button type="submit"
+                    class="rounded-xl bg-orange-500 px-7 py-3 font-semibold text-white shadow-sm transition hover:bg-orange-600">
+                Enregistrer l'objet
+            </button>
+
+            <a href="{{ route('items.index') }}"
+               class="rounded-xl border border-stone-300 bg-white px-7 py-3 font-semibold text-slate-700 transition hover:bg-stone-100">
+                Annuler
+            </a>
+
+        </div>
 
     </form>
 
