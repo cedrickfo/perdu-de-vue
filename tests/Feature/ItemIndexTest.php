@@ -185,3 +185,18 @@ it('trie les objets du plus récent au plus ancien', function () {
         ];
     });
 });
+
+it('affiche les dates en français', function () {
+
+    $item = Item::factory()->create([
+        'found_on' => today()->subDays(3),
+    ]);
+
+    $date = $item->found_on->locale('fr');
+
+    expect($date->isoFormat('D MMMM YYYY'))
+        ->toContain(' ');
+
+    expect($date->diffForHumans())
+        ->toContain('il y a');
+});

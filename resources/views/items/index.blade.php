@@ -255,10 +255,15 @@
             {{-- Contenu de la carte --}}
             <div class="space-y-3 p-5">
 
-                <p class="text-xs text-slate-500">
-                    N° {{ str_pad($item->id, 4, '0', STR_PAD_LEFT) }}
-                    · Trouvé le {{ $item->found_on->format('d/m/Y') }}
-                </p>
+               <p class="text-xs text-slate-500">
+    N° {{ str_pad($item->id, 4, '0', STR_PAD_LEFT) }}
+    · Trouvé le {{ $item->found_on->locale('fr')->isoFormat('D MMMM YYYY') }}
+    <span class="block text-orange-700">
+        {{ $item->found_on->locale('fr')->diffForHumans() }}
+    </span>
+</p>
+
+
 
                 <h2 class="min-h-12 text-lg font-bold text-slate-900">
 
