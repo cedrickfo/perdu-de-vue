@@ -1,0 +1,30 @@
+
+name: Tests Laravel
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    name: Tests Pest
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: pdo_sqlite
+          coverage: none
+
+      - name: Installer les dépendances
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Préparer l'environnement
+        run: cp .env.example .env
+
+      - name: Générer la clé Laravel
+        run: php artisan key:generate
+
+      - name: Exécuter les tests
+        run: php artisan test
